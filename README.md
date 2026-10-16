@@ -1,16 +1,33 @@
-## Hi there 👋
+# Wildlandwheels
 
-<!--
-**wildlandwheels/wildlandwheels** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+Austin Wheeler’s portfolio: photography, short-form content, and marketing.
 
-Here are some ideas to get you started:
+The site is static HTML, CSS, and one gallery script. It does not need a backend.
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+## Run locally
+
+From the repository root:
+
+```bash
+python3 -m http.server 4173 --bind 127.0.0.1
+```
+
+Open http://127.0.0.1:4173/
+
+`npm run dev` runs the same command.
+
+## Build
+
+```bash
+bash scripts/build.sh
+```
+
+`npm run build` runs that script. It copies the site into `dist/` for any static host.
+
+Preview the build:
+
+```bash
+python3 -m http.server 4173 --bind 127.0.0.1 --directory dist
+```
+
+`npm run preview` runs the same command. Build first so `dist/` exists.
