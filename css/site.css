@@ -160,8 +160,11 @@ nav a:hover,.text-link:hover {
   color:var(--pine);
   margin:0 0 20px
 }
-h1,h2,h3,p {
-  margin-top:0
+h1,h2,h3,p,figure,ul,ol {
+  margin:0
+}
+ul,ol {
+  padding:0
 }
 h1 {
   font:600 clamp(44px,5.9vw,88px)/1.02 var(--display);
@@ -1433,15 +1436,16 @@ figcaption span:last-child {
   display:flex;
   align-items:center;
   margin:0;
-  padding:0;
+  padding:3px;
   border:0;
   background:transparent
 }
 .gallery-tabs button {
   background:transparent;
-  border:0;
+  border:1px solid transparent;
   color:color-mix(in srgb, var(--foreground) 60%, transparent);
-  font:500 14px/1.2 var(--display);
+  font-weight:500;
+  line-height:1.42857;
   position:relative
 }
 .gallery-tabs button[aria-selected="true"] {

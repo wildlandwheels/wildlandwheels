@@ -44,7 +44,12 @@ const journeys = {
     await page.getByRole("link", { name: "View selected work" }).click();
     const work = page.getByRole("heading", { level: 2, name: "Two sides of the same practice." });
     await work.waitFor();
-    await page.waitForTimeout(200);
+    await page.waitForFunction(() => {
+      const el = document.getElementById("work-title");
+      if (!el) return false;
+      const rect = el.getBoundingClientRect();
+      return rect.top >= 0 && rect.bottom <= window.innerHeight;
+    });
     const box = await work.boundingBox();
     check("home", "selected work in view", !!box && box.y >= 0 && box.y < 900, JSON.stringify(box));
     check("home", "url hash", page.url().includes("#work"), page.url());
@@ -79,7 +84,7 @@ const journeys = {
     await page.goto(`${base}/`, { waitUntil: "networkidle" });
     await shot(page, "farm-truck", "home");
     await page.getByRole("link", { name: "Read the project" }).click();
-    await page.waitForURL(/\/work\/farm-truck-brewing$/);
+    await page.waitForURL(/\/work\/farm-truck-brewing\/?$/);
     const heading = page.getByRole("heading", { level: 1, name: "Farm Truck Brewing." });
     await heading.waitFor();
     check("farm-truck", "case heading", await heading.isVisible(), "heading");
@@ -95,7 +100,12 @@ const journeys = {
     await page.getByRole("link", { name: "Contact" }).click();
     const email = page.getByRole("link", { name: "Email Austin" });
     await email.waitFor();
-    await page.waitForTimeout(200);
+    await page.waitForFunction(() => {
+      const el = document.querySelector("#contact .contact-link");
+      if (!el) return false;
+      const rect = el.getBoundingClientRect();
+      return rect.top >= 0 && rect.bottom <= window.innerHeight;
+    });
     const href = await email.getAttribute("href");
     check("contact", "mailto", href === "mailto:contact@austinw.photo", href);
     check("contact", "visible", await email.isVisible(), "visible");
@@ -107,7 +117,7 @@ const journeys = {
   async about(page) {
     await page.goto(`${base}/`, { waitUntil: "networkidle" });
     await page.getByRole("link", { name: "More about Austin" }).click();
-    await page.waitForURL(/\/about$/);
+    await page.waitForURL(/\/about\/?$/);
     const heading = page.getByRole("heading", { level: 1, name: "Austin Wheeler." });
     await heading.waitFor();
     const mail = page.getByRole("link", { name: "contact@austinw.photo ↗" });

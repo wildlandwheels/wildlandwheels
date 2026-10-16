@@ -26,9 +26,9 @@ case "$cmd" in
     ;;
 esac
 
-home_html="$(curl -fsS "$base/")"
-photo_html="$(curl -fsS "$base/photography")"
-case_html="$(curl -fsS "$base/work/farm-truck-brewing")"
+home_html="$(curl -fsSL "$base/")"
+photo_html="$(curl -fsSL "$base/photography")"
+case_html="$(curl -fsSL "$base/work/farm-truck-brewing")"
 
 grep -q "People. Places. A closer look." <<<"$home_html"
 grep -q "An alpine afternoon" <<<"$photo_html"

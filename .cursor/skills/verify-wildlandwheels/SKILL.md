@@ -11,23 +11,27 @@ Read `features/README.md` before a proof, then follow the feature file for the b
 
 ## Launch
 
-From the repository root, build, then start the preview on a free port. The default port is `4173`.
+From the repository root, build and start the preview on a free port. The default port is `4173`.
 
 ```bash
-bash scripts/build.sh
-mkdir -p artifacts/verify-wildlandwheels
-PORT=4173
-python3 -m http.server "$PORT" --bind 127.0.0.1 --directory dist \
-  > artifacts/verify-wildlandwheels/server.log 2>&1 &
-echo $! > artifacts/verify-wildlandwheels/server.pid
+PORT=4173 bash .cursor/skills/verify-wildlandwheels/scripts/launch.sh
 ```
 
-Ready means both of these are true:
+The helper runs `bash scripts/build.sh`, then starts this server and records its pid:
+
+```bash
+python3 -u -m http.server "$PORT" --bind 127.0.0.1 --directory dist \
+  > artifacts/verify-wildlandwheels/server.log 2>&1
+```
+
+`python3 -u` is required. Without it the ready line stays buffered in the log.
+
+Ready means the helper prints `launch: ready http://127.0.0.1:4173 pid <pid>` after both of these are true:
 
 - `artifacts/verify-wildlandwheels/server.log` contains `Serving HTTP on 127.0.0.1 port 4173` (or the port you chose).
 - `curl -fsS "http://127.0.0.1:$PORT/"` returns HTML that contains `People. Places. A closer look.`
 
-A listening port alone is not ready. Wait until the hero heading is in the response. Teardown is the Cleanup section. There are no migrations or seed data.
+A listening port alone is not ready. Wait until the hero heading is in the response. If the port is taken, the helper exits and names `PORT`; do not kill the other process. Teardown is the Cleanup section. There are no migrations or seed data.
 
 Install the browser driver once per checkout before Drive. The script uses the Chrome already installed on the machine (`channel: "chrome"`), so skip Playwright's browser download:
 
@@ -48,7 +52,7 @@ PORT=4173 bash .cursor/skills/verify-wildlandwheels/scripts/doctor.sh
 Doctor passes only when all of these are true:
 
 - `artifacts/verify-wildlandwheels/server.pid` is the live process this run started.
-- That process command line is `python3 -m http.server` bound to `127.0.0.1` and serving `dist`.
+- That process command line includes `http.server`, the chosen port, and `dist`, bound to `127.0.0.1`. Launch uses `python3 -u` so the ready line is written to the log immediately.
 - `http://127.0.0.1:$PORT/` contains the home hero heading.
 - `http://127.0.0.1:$PORT/photography` contains `An alpine afternoon` and `/photos/archive-01.jpg`.
 - `http://127.0.0.1:$PORT/work/farm-truck-brewing` contains `Farm Truck`.
@@ -105,6 +109,7 @@ After cleanup, confirm the evidence files are still on disk and the pid is no lo
 
 ## Helpers
 
+- `PORT=4173 bash .cursor/skills/verify-wildlandwheels/scripts/launch.sh` builds `dist/` and starts the preview.
 - `bash scripts/build.sh` copies the site into `dist/`.
 - `PORT=4173 bash .cursor/skills/verify-wildlandwheels/scripts/doctor.sh` runs the read-only health check.
 - `node .cursor/skills/verify-wildlandwheels/scripts/drive.mjs --base http://127.0.0.1:4173 --features home,photography` drives the named features.
