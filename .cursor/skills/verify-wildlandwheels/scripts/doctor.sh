@@ -19,9 +19,9 @@ fi
 
 cmd="$(tr '\0' ' ' < "/proc/$pid/cmdline")"
 case "$cmd" in
-  *http.server*"$port"*dist*) ;;
+  *http.server*"$port"*127.0.0.1*dist*) ;;
   *)
-    echo "doctor: pid $pid is not this preview ($cmd)" >&2
+    echo "doctor: pid $pid is not this preview bound to 127.0.0.1 ($cmd)" >&2
     exit 1
     ;;
 esac

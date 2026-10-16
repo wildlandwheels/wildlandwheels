@@ -8,7 +8,7 @@ rm -rf "$dist"
 mkdir -p "$dist"
 
 cp "$root/index.html" "$root/404.html" "$root/favicon.svg" "$dist/"
-cp -R "$root/about" "$root/photography" "$root/journal" "$root/admin" "$root/work" \
+cp -R "$root/about" "$root/photography" "$root/journal" "$root/work" \
   "$root/css" "$root/js" "$root/photos" "$root/fonts" "$dist/"
 
 test -s "$dist/index.html"

@@ -20,10 +20,10 @@ Preconditions:
 - Doctor reports a healthy preview at `http://127.0.0.1:4173`.
 - Drive with `node .cursor/skills/verify-wildlandwheels/scripts/drive.mjs --base http://127.0.0.1:4173 --features contact`.
 
-- **Open home.** Go to the site root. Run `page.goto(base + "/")`.
-- **Jump to contact.** Choose `Contact`. Run `page.getByRole("link", { name: "Contact" }).click()`. The `Email Austin` link is visible inside the viewport.
-- **Read the address.** Do not activate the mailto link. Run `page.getByRole("link", { name: "Email Austin" }).getAttribute("href")`. The value is `mailto:contact@austinw.photo`.
-- **Record the contact section.** Capture the section. Run `page.screenshot` to `artifacts/verify-wildlandwheels/contact-email.png`. The heading `Let’s make something worth noticing.` is visible.
+- **Open home.** Go to the site root. Run `page.goto(base + "/")`. Capture the start. Run `page.screenshot` to `artifacts/verify-wildlandwheels/contact-home.png`.
+- **Jump to contact.** Choose `Contact`. Run `page.getByRole("link", { name: "Contact" }).click()`. Wait until `window.scrollY` is unchanged between two checks and `Email Austin` is fully inside the viewport.
+- **Read the address.** Do not activate the mailto link. Run `page.getByRole("link", { name: "Email Austin" }).getAttribute("href")`. The value is `mailto:contact@austinw.photo`. The heading `Let’s make something worth noticing.` is visible.
+- **Record the contact section.** Capture the settled section. Run `page.screenshot` to `artifacts/verify-wildlandwheels/contact-email.png`.
 
 ## Gotchas
 

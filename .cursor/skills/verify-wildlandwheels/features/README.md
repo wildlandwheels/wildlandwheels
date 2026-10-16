@@ -43,4 +43,4 @@ Each feature file starts with an H1 title and one paragraph describing the user-
 - [Farm Truck Brewing](./farm-truck-brewing.md) covers the marketing case study.
 - [Contact email](./contact-email.md) covers the email link on the home page.
 - [About](./about.md) covers the about page and its email link.
-- [Journal](./journal.md) covers the journal placeholder.
+- [Journal](./journal.md) covers the journal note and the link that opens the photography archive.

@@ -24,7 +24,7 @@ Preconditions:
 
 - **Open the archive.** Go to the photography page. Run `page.goto(base + "/photography")`. The heading `People. Places. A closer look.` is visible and twelve photographs are shown.
 - **Record the full archive.** Capture the grid. Run `page.screenshot` to `artifacts/verify-wildlandwheels/photography-all.png`.
-- **Filter to Places.** Choose the `Places` tab. Run `page.getByRole("tab", { name: "Places" }).click()`. Five photographs remain visible and each caption category reads `Places`.
+- **Filter to Places.** Choose the `Places` tab. Run `page.getByRole("tab", { name: "Places" }).click()`. The tab’s `aria-controls` element has `role` `tabpanel`, and after the click its `aria-labelledby` is `tab-places`. Five photographs remain visible and each caption category reads `Places`.
 - **Record the collection.** Capture the filtered grid. Run `page.screenshot` to `artifacts/verify-wildlandwheels/photography-places.png`.
 - **Open a photograph.** Choose `View An alpine afternoon`. Run `page.getByRole("button", { name: "View An alpine afternoon" }).click()`. A dialog heading reads `An alpine afternoon`, the image source contains `/photos/archive-01.jpg`, and the category reads `Places`.
 - **Record the viewer.** Capture the open dialog. Run `page.screenshot` to `artifacts/verify-wildlandwheels/photography-lightbox.png`.

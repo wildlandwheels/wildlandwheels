@@ -9,7 +9,9 @@
 
   function selectTab(tab) {
     var category = tab.getAttribute("data-category");
+    var panel = document.getElementById("photo-grid");
     var shown = 0;
+    if (panel) panel.setAttribute("aria-labelledby", tab.id);
     tabs.forEach(function (item) {
       var selected = item === tab;
       item.setAttribute("aria-selected", selected ? "true" : "false");

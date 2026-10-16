@@ -19,8 +19,8 @@ Preconditions:
 - Doctor reports a healthy preview at `http://127.0.0.1:4173`.
 - Drive with `node .cursor/skills/verify-wildlandwheels/scripts/drive.mjs --base http://127.0.0.1:4173 --features about`.
 
-- **Start at home.** Open the site root. Run `page.goto(base + "/")`.
-- **Open about.** Choose `More about Austin`. Run `page.getByRole("link", { name: "More about Austin" }).click()`. The URL path is `/about` and the heading reads `Austin Wheeler.`
+- **Start at home.** Open the site root. Run `page.goto(base + "/")`. Capture the start. Run `page.screenshot` to `artifacts/verify-wildlandwheels/about-home.png`.
+- **Open about.** Choose `More about Austin`. Run `page.getByRole("link", { name: "More about Austin" }).click()`. The URL path is `/about`, the heading reads `Austin Wheeler.`, and the lead `Photographer, marketer and wildland firefighter based in South Jersey.` is visible.
 - **Read the email.** Do not activate the mailto link. The link named `contact@austinw.photo ↗` has `href` `mailto:contact@austinw.photo`.
 - **Record the page.** Capture the about page. Run `page.screenshot` to `artifacts/verify-wildlandwheels/about-page.png`.
 
