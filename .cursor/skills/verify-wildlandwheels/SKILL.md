@@ -109,6 +109,10 @@ The script reads `artifacts/verify-wildlandwheels/server.pid`, sends `SIGTERM` t
 
 After cleanup, confirm the evidence files are still on disk and the pid is no longer running.
 
+## Overflow
+
+`bash scripts/check.sh` fails when any built page, or the photography lightbox, scrolls horizontally at 320 or 390 CSS pixels. `bash scripts/check.sh --self-test` must show the broken overflow fixture failing and the fitted fixture passing. Run that check after layout changes, in addition to the browser journeys below.
+
 ## Helpers
 
 - `PORT=4173 bash .cursor/skills/verify-wildlandwheels/scripts/launch.sh` builds `dist/` and starts the preview.

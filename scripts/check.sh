@@ -8,8 +8,16 @@ if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
   exit 0
 fi
 
+if [[ ! -d "$root/node_modules/playwright" ]]; then
+  echo "check: install dependencies with npm install before the overflow check." >&2
+  exit 1
+fi
+
 if [[ "${1:-}" == "--self-test" ]]; then
-  exec python3 "$root/scripts/check_site.py" --self-test
+  status=0
+  python3 "$root/scripts/check_site.py" --self-test || status=1
+  node "$root/scripts/check_overflow.mjs" --self-test || status=1
+  exit "$status"
 fi
 
 target="${1:-$root/dist}"
@@ -18,4 +26,5 @@ if [[ ! -d "$target" ]]; then
   exit 2
 fi
 
-exec python3 "$root/scripts/check_site.py" "$target"
+python3 "$root/scripts/check_site.py" "$target"
+node "$root/scripts/check_overflow.mjs" "$target"
