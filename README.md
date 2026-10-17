@@ -49,7 +49,11 @@ bash scripts/check.sh
 - An `img` has no `alt` attribute.
 - An `aria-controls` target is missing, or a tab does not point at a tabpanel.
 - A positional `nav` selector hides a link.
+- A page scrolls horizontally at 320 or 390 CSS pixels, including the photograph lightbox.
+- An in-paragraph link is not `display: inline` at those widths.
 
-`bash scripts/check.sh --self-test` runs the same checks against the fixtures in `scripts/fixtures/`. Those fixtures are broken on purpose, and the self-test expects each one to fail.
+The overflow check uses Playwright. Run `npm install` once so `playwright` is available. It launches Chrome when it is installed, and otherwise Playwright's Chromium.
+
+`bash scripts/check.sh --self-test` runs the same checks against the fixtures in `scripts/fixtures/`. Those fixtures are broken on purpose, and the self-test expects each one to fail. It also proves the overflow check rejects `scripts/overflow/broken`, rejects an in-paragraph `inline-flex` link in `scripts/overflow/inline-flex`, and accepts `scripts/overflow/fitted`.
 
 The check does not flag unused CSS selectors. `nav a:hover` and `[aria-selected="true"]` are real rules, and they do not appear as text in the HTML. `gallery.js` also shows and hides photographs without adding a class. A selector list would fail the current site.
