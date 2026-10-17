@@ -1,0 +1,2 @@
+form on a static site with no backend
+input type="password" on a static site

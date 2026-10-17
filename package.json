@@ -4,6 +4,7 @@
   "description": "Austin Wheeler portfolio site for Wildlandwheels.",
   "scripts": {
     "build": "bash scripts/build.sh",
+    "check": "bash scripts/check.sh",
     "dev": "python3 -m http.server 4173 --bind 127.0.0.1",
     "preview": "python3 -m http.server 4173 --bind 127.0.0.1 --directory dist"
   },

@@ -31,3 +31,25 @@ python3 -m http.server 4173 --bind 127.0.0.1 --directory dist
 ```
 
 `npm run preview` runs the same command. Build first so `dist/` exists.
+
+## Checks
+
+Build the site, then check `dist/`.
+
+```bash
+bash scripts/build.sh
+bash scripts/check.sh
+```
+
+`npm run check` runs the same check. The check fails when any of these are true:
+
+- An internal link or fragment does not resolve.
+- A page contains a form or a password field.
+- A file in `fonts/` has no matching license.
+- An `img` has no `alt` attribute.
+- An `aria-controls` target is missing, or a tab does not point at a tabpanel.
+- A positional `nav` selector hides a link.
+
+`bash scripts/check.sh --self-test` runs the same checks against the fixtures in `scripts/fixtures/`. Those fixtures are broken on purpose, and the self-test expects each one to fail.
+
+The check does not flag unused CSS selectors. `nav a:hover` and `[aria-selected="true"]` are real rules, and they do not appear as text in the HTML. `gallery.js` also shows and hides photographs without adding a class. A selector list would fail the current site.
