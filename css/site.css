@@ -1063,14 +1063,20 @@ figcaption span:last-child {
     gap:12px;
     font-size:14px
   }
-  nav a,.wordmark,.text-link,.contact-link,.btn,.gallery-tabs button,.lightbox-close,.site-footer a {
+  nav a,.wordmark,.contact-link,.btn,.gallery-tabs button,.lightbox-close,.site-footer a,.text-link {
     min-height:44px
   }
-  nav a,.text-link,.contact-link,.gallery-tabs button,.site-footer a:not(.footer-name) {
+  nav a,.contact-link,.gallery-tabs button,.site-footer a:not(.footer-name),.text-link {
     display:inline-flex;
     align-items:center;
     justify-content:center;
     min-width:44px
+  }
+  p .text-link {
+    display:inline;
+    min-width:auto;
+    min-height:auto;
+    white-space:normal
   }
   .wordmark,.footer-name {
     justify-content:center

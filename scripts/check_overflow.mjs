@@ -123,6 +123,22 @@ async function audit(dir) {
         if (result.delta > tolerance || result.offenders.length) {
           findings.push({ width, route, where: "page", ...result });
         }
+        const inlineLinks = await page.evaluate(() => {
+          return [...document.querySelectorAll("p a")].flatMap((el) => {
+            const display = getComputedStyle(el).display;
+            if (display === "inline") return [];
+            return [{ display, text: (el.textContent || "").trim().slice(0, 40) }];
+          });
+        });
+        if (inlineLinks.length) {
+          findings.push({
+            width,
+            route,
+            where: "inline-link",
+            delta: 0,
+            offenders: inlineLinks.map((entry) => ({ tag: "a", cls: `${entry.display} ${entry.text}`, over: 0 })),
+          });
+        }
         if (await page.locator(".photo-button").count()) {
           await page.locator(".photo-button").first().click();
           await page.locator("dialog[open]").waitFor();
@@ -144,6 +160,11 @@ async function audit(dir) {
 
 function report(findings) {
   for (const item of findings) {
+    if (item.where === "inline-link") {
+      const names = item.offenders.map((entry) => entry.cls).join(", ");
+      console.error(`inline-link: ${item.width}px ${item.route} in-paragraph link is not inline (${names})`);
+      continue;
+    }
     const names = item.offenders.map((entry) => `${entry.tag}.${entry.cls} (+${entry.over}px)`).join(", ");
     console.error(
       `overflow: ${item.width}px ${item.route} ${item.where} scroll ${Math.round(item.delta)}px${names ? ` ${names}` : ""}`,
@@ -154,8 +175,10 @@ function report(findings) {
 async function selfTest() {
   const brokenDir = path.join(root, "scripts/overflow/broken");
   const fittedDir = path.join(root, "scripts/overflow/fitted");
+  const inlineFlexDir = path.join(root, "scripts/overflow/inline-flex");
   const broken = await audit(brokenDir);
   const fitted = await audit(fittedDir);
+  const inlineFlex = await audit(inlineFlexDir);
   let failed = false;
   if (!broken.length) {
     console.error("overflow self-test: broken fixture did not overflow");
@@ -166,11 +189,23 @@ async function selfTest() {
     );
   }
   if (fitted.length) {
-    console.error("overflow self-test: fitted fixture overflowed");
+    console.error("overflow self-test: fitted fixture failed");
     report(fitted);
     failed = true;
   } else {
     console.log("overflow self-test: fitted fixture passed");
+  }
+  if (!inlineFlex.some((item) => item.where === "inline-link")) {
+    console.error("overflow self-test: in-paragraph inline-flex link was not detected");
+    failed = true;
+  } else if (inlineFlex.some((item) => item.where !== "inline-link")) {
+    console.error("overflow self-test: inline-flex fixture failed for another reason");
+    report(inlineFlex.filter((item) => item.where !== "inline-link"));
+    failed = true;
+  } else {
+    console.log(
+      `overflow self-test: in-paragraph inline-flex link failed as expected (${inlineFlex[0].width}px ${inlineFlex[0].route})`,
+    );
   }
   if (failed) {
     console.error("overflow self-test: failed");

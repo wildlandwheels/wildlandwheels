@@ -111,7 +111,7 @@ After cleanup, confirm the evidence files are still on disk and the pid is no lo
 
 ## Overflow
 
-`bash scripts/check.sh` fails when any built page, or the photography lightbox, scrolls horizontally at 320 or 390 CSS pixels. `bash scripts/check.sh --self-test` must show the broken overflow fixture failing and the fitted fixture passing. Run that check after layout changes, in addition to the browser journeys below.
+`bash scripts/check.sh` fails when any built page, or the photography lightbox, scrolls horizontally at 320 or 390 CSS pixels, and when an in-paragraph link is not `display: inline` at those widths. `bash scripts/check.sh --self-test` must show the broken overflow fixture failing, the in-paragraph `inline-flex` fixture failing, and the fitted fixture passing. Run that check after layout changes, in addition to the browser journeys below.
 
 ## Helpers
 
