@@ -57,3 +57,7 @@ The overflow check uses Playwright. Run `npm install` once so `playwright` is av
 `bash scripts/check.sh --self-test` runs the same checks against the fixtures in `scripts/fixtures/`. Those fixtures are broken on purpose, and the self-test expects each one to fail. It also proves the overflow check rejects `scripts/overflow/broken`, rejects an in-paragraph `inline-flex` link in `scripts/overflow/inline-flex`, and accepts `scripts/overflow/fitted`.
 
 The check does not flag unused CSS selectors. `nav a:hover` and `[aria-selected="true"]` are real rules, and they do not appear as text in the HTML. `gallery.js` also shows and hides photographs without adding a class. A selector list would fail the current site.
+
+## Deploy
+
+A push to `main` builds the site and deploys `dist/` to the Cloudflare Pages project `wildlandwheels`, which serves wildlandwheels.com. The deploy runs only after the site checks pass. The same workflow can be started from the Actions tab.
