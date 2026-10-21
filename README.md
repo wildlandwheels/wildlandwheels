@@ -60,4 +60,4 @@ The check does not flag unused CSS selectors. `nav a:hover` and `[aria-selected=
 
 ## Deploy
 
-A push to `main` builds the site and deploys `dist/` to the Cloudflare Pages project `wildlandwheels`, which serves wildlandwheels.com. The deploy runs only after the site checks pass. The same workflow can be started from the Actions tab.
+A push to `main` builds the site and deploys `dist/` to the Cloudflare Pages project `wildlandwheels`, which serves wildlandwheels.com. The deploy runs only after the site checks pass. The deploy job uses the `production` environment, so it waits for Austin's approval before anything reaches the live site. The same workflow can be started from the Actions tab.
