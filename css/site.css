@@ -1200,3 +1200,15 @@ figcaption span:last-child {
     font-size:clamp(36px,14vw,48px)
   }
 }
+.case-piece {
+  border-top:1px solid var(--border);
+  padding-block:clamp(55px,7vw,80px)
+}
+.case-piece img {
+  width:100%;
+  height:auto;
+  background:var(--mist)
+}
+.case-piece figcaption span {
+  min-width:0
+}

@@ -24,9 +24,11 @@ Preconditions:
 - **Open the project.** Choose `Read the project`. Run `page.getByRole("link", { name: "Read the project" }).click()`. The URL path is `/work/farm-truck-brewing` and the heading reads `Farm Truck Brewing.`
 - **Check the outbound links.** Read `Visit Farm Truck Brewing ↗` and `Email Austin` without clicking them. Their `href` values are `https://farmtruckbrewing.com` and `mailto:contact@austinw.photo`.
 - **Record the case study.** Capture the loaded page. Run `page.screenshot` to `artifacts/verify-wildlandwheels/farm-truck-case.png`.
+- **Record the label.** Scroll to the recent-work figure. The image alt is `Lift Me Up IPA can label, a Farm Truck Brewing collaboration with SensaMotion and Kings and Comrades`. The caption reads `Lift Me Up IPA can label` and `SensaMotion × Kings and Comrades collab`. Capture `artifacts/verify-wildlandwheels/farm-truck-label.png`.
 
 ## Gotchas
 
 - The heading accessible name is `Farm Truck Brewing.` including the period. A line break in the title does not add a space.
+- The page uses smooth scrolling. Scroll the label with `behavior: "instant"` and wait until the recent-work section is at the top before capturing it.
 - Clicking `Visit Farm Truck Brewing ↗` leaves this site. Proof is the `href`, not a screenshot of farmtruckbrewing.com.
 - `Marketing` in the navigation is a second entry point. A pass through `Read the project` does not by itself verify the navigation link.
