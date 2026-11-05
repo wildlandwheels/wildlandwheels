@@ -74,7 +74,7 @@ node .cursor/skills/verify-wildlandwheels/scripts/drive.mjs \
 Selectors the script uses:
 
 - Home hero heading: `getByRole('heading', { level: 1, name: 'People. Places. A closer look.' })`
-- Home hero image alt: `Turquoise lake surrounded by evergreens and distant mountains` on `.hero-photograph img`
+- Home hero image alt: `Stars above a dark forest and distant mountain` on `.hero-photograph img`
 - Selected work: `getByRole('link', { name: 'View selected work' })`, then wait until scroll has stopped and the heading `Two sides of the same practice.` is near the top of the viewport
 - Journal archive: `getByRole('link', { name: 'explore the photographs' })` opens `/photography` and shows twelve photographs
 - Photography tab: `getByRole('tab', { name: 'Places' })`

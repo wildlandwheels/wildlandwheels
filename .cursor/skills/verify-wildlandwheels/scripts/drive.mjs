@@ -48,7 +48,7 @@ const journeys = {
     await hero.waitFor();
     const heroAlt = await page.locator(".hero-photograph img").getAttribute("alt");
     check("home", "hero visible", await hero.isVisible(), "heading");
-    check("home", "hero alt", heroAlt === "Turquoise lake surrounded by evergreens and distant mountains", heroAlt);
+    check("home", "hero alt", heroAlt === "Stars above a dark forest and distant mountain", heroAlt);
     await shot(page, "home", "loaded");
     await page.getByRole("link", { name: "View selected work" }).click();
     const work = page.getByRole("heading", { level: 2, name: "Two sides of the same practice." });
@@ -115,11 +115,11 @@ const journeys = {
   async contact(page) {
     await page.goto(`${base}/`, { waitUntil: "networkidle" });
     await shot(page, "contact", "home");
-    await page.getByRole("link", { name: "Contact" }).click();
+    await page.getByRole("link", { name: "Contact", exact: true }).click();
     const email = page.getByRole("link", { name: "Email Austin" });
     await email.waitFor();
     await waitForSettledScroll(page, () => {
-      const el = document.querySelector("#contact .contact-link");
+      const el = document.getElementById("contact-title");
       if (!el) return false;
       const rect = el.getBoundingClientRect();
       const y = window.scrollY;
