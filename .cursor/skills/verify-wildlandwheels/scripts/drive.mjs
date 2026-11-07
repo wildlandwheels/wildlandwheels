@@ -110,6 +110,30 @@ const journeys = {
     const email = page.getByRole("link", { name: "Email Austin" });
     check("farm-truck", "email link", (await email.getAttribute("href")) === "mailto:contact@austinw.photo", await email.getAttribute("href"));
     await shot(page, "farm-truck", "case");
+    const label = page.getByRole("img", {
+      name: "Lift Me Up IPA can label, a Farm Truck Brewing collaboration with SensaMotion and Kings and Comrades",
+    });
+    check("farm-truck", "label src", (await label.getAttribute("src")) === "/photos/lift-me-up-can-label.jpg", await label.getAttribute("src"));
+    const caption = await page.locator(".case-piece figcaption").innerText();
+    check(
+      "farm-truck",
+      "label caption",
+      caption.includes("Lift Me Up IPA can label") && caption.includes("SensaMotion × Kings and Comrades collab"),
+      caption,
+    );
+    await page.setViewportSize({ width: 1440, height: 1200 });
+    await page.locator(".case-piece").evaluate((el) => el.scrollIntoView({ block: "start", behavior: "instant" }));
+    await page.waitForFunction(() => {
+      const el = document.querySelector(".case-piece");
+      if (!el) return false;
+      const top = el.getBoundingClientRect().top;
+      return top >= -2 && top <= 40;
+    });
+    await label.evaluate((img) => img.decode());
+    const labelBox = await label.boundingBox();
+    check("farm-truck", "label visible", !!labelBox && labelBox.y >= 0 && labelBox.y < 400, JSON.stringify(labelBox));
+    await shot(page, "farm-truck", "label");
+    await page.setViewportSize({ width: 1440, height: 900 });
   },
 
   async contact(page) {
