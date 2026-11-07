@@ -1,84 +1,11 @@
-import { chromium } from "playwright";
+import { launchBrowser, pagesIn, startServer } from "./browser_helpers.mjs";
 import fs from "node:fs";
-import http from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const widths = [320, 390];
+const widths = [320, 390, 768, 1024, 1440];
 const tolerance = 1;
-
-const types = {
-  ".html": "text/html; charset=utf-8",
-  ".css": "text/css; charset=utf-8",
-  ".js": "text/javascript; charset=utf-8",
-  ".svg": "image/svg+xml",
-  ".jpg": "image/jpeg",
-  ".jpeg": "image/jpeg",
-  ".png": "image/png",
-  ".webp": "image/webp",
-  ".woff2": "font/woff2",
-  ".woff": "font/woff",
-};
-
-function pagesIn(dir) {
-  const found = [];
-  const walk = (current) => {
-    for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
-      const full = path.join(current, entry.name);
-      if (entry.isDirectory()) walk(full);
-      else if (entry.name.endsWith(".html")) found.push(full);
-    }
-  };
-  walk(dir);
-  return found.map((file) => {
-    const rel = path.relative(dir, file).split(path.sep).join("/");
-    if (rel === "index.html") return "/";
-    if (rel.endsWith("/index.html")) return `/${rel.slice(0, -"index.html".length)}`;
-    return `/${rel}`;
-  });
-}
-
-function startServer(dir) {
-  const base = path.resolve(dir);
-  const server = http.createServer((req, res) => {
-    const url = new URL(req.url || "/", "http://127.0.0.1");
-    let rel = decodeURIComponent(url.pathname);
-    if (rel.endsWith("/")) rel += "index.html";
-    const file = path.resolve(base, `.${rel}`);
-    if (file !== base && !file.startsWith(`${base}${path.sep}`)) {
-      res.writeHead(403);
-      res.end();
-      return;
-    }
-    let target = file;
-    if (!fs.existsSync(target) && !path.extname(target)) {
-      const index = path.join(target, "index.html");
-      if (fs.existsSync(index)) target = index;
-    }
-    if (!fs.existsSync(target) || !fs.statSync(target).isFile()) {
-      res.writeHead(404);
-      res.end("not found");
-      return;
-    }
-    res.writeHead(200, { "content-type": types[path.extname(target)] || "application/octet-stream" });
-    fs.createReadStream(target).pipe(res);
-  });
-  return new Promise((resolve) => {
-    server.listen(0, "127.0.0.1", () => {
-      const address = server.address();
-      resolve({ server, origin: `http://127.0.0.1:${address.port}` });
-    });
-  });
-}
-
-async function launchBrowser() {
-  try {
-    return await chromium.launch({ channel: "chrome", headless: true });
-  } catch {
-    return await chromium.launch({ headless: true });
-  }
-}
 
 async function measure(page) {
   return page.evaluate((limit) => {
@@ -110,9 +37,10 @@ async function measure(page) {
 async function audit(dir) {
   const routes = pagesIn(dir);
   const { server, origin } = await startServer(dir);
-  const browser = await launchBrowser();
+  let browser;
   const findings = [];
   try {
+    browser = await launchBrowser();
     const page = await browser.newPage();
     for (const width of widths) {
       await page.setViewportSize({ width, height: 800 });
@@ -152,7 +80,7 @@ async function audit(dir) {
       }
     }
   } finally {
-    await browser.close();
+    if (browser) await browser.close();
     await new Promise((resolve, reject) => server.close((error) => (error ? reject(error) : resolve())));
   }
   return findings;

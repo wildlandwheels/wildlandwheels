@@ -33,7 +33,7 @@ Ready means the helper prints `launch: ready http://127.0.0.1:4173 pid <pid>` af
 
 A listening port alone is not ready. Wait until the hero heading is in the response. If the port is taken, the helper exits and names `PORT`; do not kill the other process. Teardown is the Cleanup section. There are no migrations or seed data.
 
-Install the browser driver once per checkout before Drive. The script uses the Chrome already installed on the machine (`channel: "chrome"`), so skip Playwright's browser download:
+Install the browser driver once per checkout before Drive. The driver uses the shared `scripts/browser_helpers.mjs` launcher. It supports the installed Chrome, or a Chromium executable selected with `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`. Skip Playwright's browser download when using an installed browser:
 
 ```bash
 PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm install
@@ -61,7 +61,7 @@ If doctor fails, do not drive that process.
 
 ## Drive
 
-Use Playwright against the preview base URL. Stable handles are roles and accessible names already in the pages: `heading`, `link`, `tab`, and `button`. Do not click by coordinates.
+Use Playwright against the preview base URL. The shared launcher is the only browser-launch configuration; do not hard-code a local executable in the driver. Stable handles are roles and accessible names already in the pages: `heading`, `link`, `tab`, and `button`. Do not click by coordinates.
 
 ```bash
 node .cursor/skills/verify-wildlandwheels/scripts/drive.mjs \
@@ -75,12 +75,18 @@ Selectors the script uses:
 
 - Home hero heading: `getByRole('heading', { level: 1, name: 'People. Places. A closer look.' })`
 - Home hero image alt: `Stars above a dark forest and distant mountain` on `.hero-photograph img`
-- Selected work: `getByRole('link', { name: 'View selected work' })`, then wait until scroll has stopped and the heading `Two sides of the same practice.` is near the top of the viewport
+- Primary photography entry: `getByRole('link', { name: 'Explore photography', exact: true })` opens the full archive.
+- Selected work: `getByRole('link', { name: 'View selected work', exact: true })`, then wait until scroll has stopped and the heading `People, places and the moments between.` is below the fixed header.
+- Marketing card: `getByRole('link', { name: /Read the project/ })`; its accessible name includes the whole card.
+- About: `getByRole('link', { name: 'More about Austin', exact: true })` opens `/about`. The shared navigation `About` also opens `/about`.
 - Journal archive: `getByRole('link', { name: 'explore the photographs' })` opens `/photography` and shows twelve photographs
 - Photography tab: `getByRole('tab', { name: 'Places' })`
 - Photograph: `getByRole('button', { name: 'View An alpine afternoon' })`
 - Lightbox title: `getByRole('heading', { level: 2, name: 'An alpine afternoon' })`
-- Lightbox close: `getByRole('button', { name: 'Close' })`
+- Lightbox close: `getByRole('button', { name: 'Close', exact: true })`
+- Viewer navigation: buttons `Previous photograph` and `Next photograph`; `#lightbox-position` reports `1 of 5`.
+- Gallery URLs: `/photography/?category=places|portraits|personal`; optional `photo=emily-in-studio` or `photo=around-the-fire`. A missing category shows all photographs. A photo outside an explicit category selects its matching category. Invalid values fall back to the safe full archive or valid category. Refresh and Back/Forward restore the URL state.
+- Archive links remain native full-size image links without JavaScript; enhanced anchors have button semantics and support Enter and Space. Filters are hidden until enhanced.
 - Farm Truck heading: `getByRole('heading', { level: 1, name: 'Farm Truck Brewing.' })`
 - Contact: `getByRole('link', { name: 'Email Austin' })` with `href` `mailto:contact@austinw.photo`
 
@@ -93,7 +99,8 @@ Write proof to `artifacts/verify-wildlandwheels/`. That directory is gitignored.
 For each driven feature, capture the action and the resulting state, not only the final screen:
 
 - A PNG screenshot before the action and after the resulting state, with the site wordmark or page heading visible.
-- `report.json` listing the feature id, entry URL, assertions, and screenshot paths.
+- `report.json` listing every assertion and screenshot with its feature id, journey `entryURL`, current `url`, and screenshot path. Each interactive action records its before/after URLs and paired `-before.png` / `-after.png` images.
+- The driver writes the report in `finally`, including failed assertions, the failed action, and a failure screenshot when the page is available. A failed or incomplete action is not a pass. Initial entry screenshots document the loaded entry page; action pairs document the interactions that follow.
 
 A screenshot of the last screen without the action that produced it is not proof. There is no test-only endpoint. Do not stub pages. External mail and the Farm Truck website are outside this site: prove the link target, and do not open them.
 
@@ -108,6 +115,8 @@ bash .cursor/skills/verify-wildlandwheels/scripts/cleanup.sh
 The script reads `artifacts/verify-wildlandwheels/server.pid`, sends `SIGTERM` to that pid, and removes the pid file. It does not delete `artifacts/verify-wildlandwheels/` screenshots, `report.json`, or `server.log`.
 
 After cleanup, confirm the evidence files are still on disk and the pid is no longer running.
+
+The driver is the six-journey smoke proof. `scripts/check_gallery.mjs` provides exhaustive gallery checks for refresh, URL normalization, keyboard behavior, focus, scroll locking, history, one-photo boundaries, and no-JavaScript fallback. `bash scripts/check.sh` invokes those checks alongside the static and overflow checks.
 
 ## Overflow
 

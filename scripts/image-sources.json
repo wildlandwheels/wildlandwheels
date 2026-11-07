@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "preserved": {
+    "photos/archive-01.jpg": {
+      "bytes": 518870,
+      "sha256": "4c5f2a3f0c067d44365a390e2df7f9eb03b68789323157229f151afa85658375"
+    },
+    "photos/archive-02.jpg": {
+      "bytes": 306460,
+      "sha256": "9b031f98636035aedcc39492d3acfc8913e8fdc58fc484556a018614aa0d4f96"
+    },
+    "photos/archive-03.jpg": {
+      "bytes": 1098275,
+      "sha256": "172f5eb765a13cedc1855ba2a994ad94121dfbcc14c7e10c1ad85d863aac52b0"
+    },
+    "photos/archive-04.jpg": {
+      "bytes": 1150437,
+      "sha256": "e5a89a69d2b90867d15ab89d43edf6cc7546a0212d194c9757c34dc987af1d48"
+    },
+    "photos/archive-05.jpg": {
+      "bytes": 776938,
+      "sha256": "9d797a34c14d242bb0216acddca1d7065586d94981d85e172433a6208d694fcd"
+    },
+    "photos/archive-06.jpg": {
+      "bytes": 303472,
+      "sha256": "13e46f7a737d28e5e4bd079345c292631df7ffa677f09c05a467650e67dfa75c"
+    },
+    "photos/archive-07.jpg": {
+      "bytes": 299606,
+      "sha256": "f6e07a02e734d27174f51c1c1c5cc5c556437ef1bed7b3f54b1044a115ff6867"
+    },
+    "photos/archive-08.jpg": {
+      "bytes": 338118,
+      "sha256": "d2ec1dd61a4e5fb8c0f94a08695c8a973f1e6d21d567a9868598d1904fa175ef"
+    },
+    "photos/archive-09.jpg": {
+      "bytes": 216005,
+      "sha256": "f00cb5f991e72492d40b6d8e8442aacc5e984e65271a7ebae9510dd9bb7c7393"
+    },
+    "photos/archive-10.jpg": {
+      "bytes": 521888,
+      "sha256": "aed423b7761f532311f0e2326099dacab737be2a0b88ed4192b6f9f837ca4fc3"
+    },
+    "photos/archive-11.jpg": {
+      "bytes": 1159433,
+      "sha256": "9364cdc8394d18efb8af0c943db10b2b98aef0e9930cca692c540e8b81ea6473"
+    },
+    "photos/archive-12.jpg": {
+      "bytes": 222140,
+      "sha256": "f65845deb513ae8bb9c3a6c4fe018ed52e5ad9ba0f33fe34f1d9e04b89a3fd76"
+    },
+    "photos/lift-me-up-can-label.jpg": {
+      "bytes": 1130647,
+      "sha256": "39bc8bc6ecc4c3d2a5d94eb267554bb9f9b339a98ca15eaad2cadb34246b2530"
+    },
+    "favicon.svg": {
+      "bytes": 257,
+      "sha256": "e38170bb51e0de26f72c387b3c05fc2701f689a42cd0c5d55c6e5e41150d6da4"
+    },
+    "fonts/FamiljenGrotesk-Bold.woff2": {
+      "bytes": 21924,
+      "sha256": "032a7164761145c6a4c6c0c130247c27c3caeb53e599079e241aebcc242652ce"
+    },
+    "fonts/FamiljenGrotesk-Regular.woff2": {
+      "bytes": 21804,
+      "sha256": "85eb744ed5801a80c5de58e873640c2d819bea9808aac9583c1dd2aaafddc42f"
+    },
+    "fonts/LICENSE-familjen-grotesk.txt": {
+      "bytes": 4408,
+      "sha256": "9708dd560d1f8aa1f006461aa447a31fda7b9aff662d152837654a388e0eb2ee"
+    },
+    "fonts/LICENSE-sora.txt": {
+      "bytes": 4385,
+      "sha256": "ba0b9729c9428ba79a0459ab8ec575791b51509dbec213e383d0316d37fec299"
+    },
+    "fonts/Sora-Regular.woff2": {
+      "bytes": 32452,
+      "sha256": "4d848854da33f6274c3b5b181d6c3c104e60352c3f55b10d0f0a8ae93a9922c0"
+    },
+    "fonts/Sora-SemiBold.woff2": {
+      "bytes": 33720,
+      "sha256": "c8ef09866c1ce0e389507b89c9123b02f9766b17ab6abc6707cb2cecabf953dd"
+    }
+  },
+  "images": {
+    "/photos/archive-01.jpg": {
+      "width": 1500,
+      "height": 1200,
+      "orientation": 1,
+      "derivatives": true
+    },
+    "/photos/archive-02.jpg": {
+      "width": 1500,
+      "height": 2250,
+      "orientation": 1,
+      "derivatives": true
+    },
+    "/photos/archive-03.jpg": {
+      "width": 1500,
+      "height": 1874,
+      "orientation": 1,
+      "derivatives": true
+    },
+    "/photos/archive-04.jpg": {
+      "width": 1500,
+      "height": 2000,
+      "orientation": 1,
+      "derivatives": true
+    },
+    "/photos/archive-05.jpg": {
+      "width": 1500,
+      "height": 1875,
+      "orientation": 1,
+      "derivatives": true
+    },
+    "/photos/archive-06.jpg": {
+      "width": 1500,
+      "height": 1000,
+      "orientation": 1,
+      "derivatives": true
+    },
+    "/photos/archive-07.jpg": {
+      "width": 1500,
+      "height": 1125,
+      "orientation": 1,
+      "derivatives": true
+    },
+    "/photos/archive-08.jpg": {
+      "width": 1500,
+      "height": 1000,
+      "orientation": 1,
+      "derivatives": true
+    },
+    "/photos/archive-09.jpg": {
+      "width": 1500,
+      "height": 1125,
+      "orientation": 1,
+      "derivatives": true
+    },
+    "/photos/archive-10.jpg": {
+      "width": 1500,
+      "height": 1200,
+      "orientation": 1,
+      "derivatives": true
+    },
+    "/photos/archive-11.jpg": {
+      "width": 1500,
+      "height": 2000,
+      "orientation": 1,
+      "derivatives": true
+    },
+    "/photos/archive-12.jpg": {
+      "width": 1500,
+      "height": 1000,
+      "orientation": 1,
+      "derivatives": true
+    },
+    "/photos/lift-me-up-can-label.jpg": {
+      "width": 2438,
+      "height": 1538,
+      "orientation": 1,
+      "derivatives": false
+    }
+  }
+}

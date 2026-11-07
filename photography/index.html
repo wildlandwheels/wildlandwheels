@@ -8,14 +8,12 @@
 <meta name="description" content="Portrait, place and personal photography by Austin Wheeler."/>
 <link rel="icon" href="/favicon.svg"/>
 <link rel="stylesheet" href="/css/site.css"/>
-<link rel="preload" as="image" href="/photos/archive-01.jpg"/>
-<link rel="preload" as="image" href="/photos/archive-02.jpg"/>
 </head>
 <body>
 <a href="#main-content" class="skip-link">Skip to content</a>
 <header class="site-header">
 <a class="wordmark" href="/#top" aria-label="Austin Wheeler home"><strong>Austin Wheeler</strong><span>Wildlandwheels</span></a>
-<nav aria-label="Main navigation"><a href="/photography">Photography</a><a href="/work/farm-truck-brewing">Marketing</a><a href="/#about">About</a><a href="/#contact">Contact</a></nav>
+<nav aria-label="Main navigation"><a href="/photography" aria-current="page">Photography</a><a href="/work/farm-truck-brewing">Marketing</a><a href="/about">About</a><a href="/#contact">Contact</a></nav>
 </header>
 <div id="main-content">
 <main class="photography-page">
@@ -25,7 +23,7 @@
 <p>An edited archive of portraits, landscapes and personal work. Select an image to view it at its original proportions.</p>
 </section>
 <section class="gallery-section" id="photographs">
-<div class="wrap gallery-top">
+<div class="wrap gallery-top" hidden>
 <p class="stamp">Browse by subject</p>
 <div class="gallery-tabs" role="tablist" aria-label="Browse by subject">
 <button type="button" role="tab" id="tab-all" aria-selected="true" aria-controls="photo-grid" data-category="All photographs">All photographs</button>
@@ -33,63 +31,70 @@
 <button type="button" role="tab" id="tab-portraits" aria-selected="false" tabindex="-1" aria-controls="photo-grid" data-category="Portraits">Portraits</button>
 <button type="button" role="tab" id="tab-personal" aria-selected="false" tabindex="-1" aria-controls="photo-grid" data-category="Personal">Personal</button>
 </div>
+<p class="gallery-count" id="gallery-count" role="status" aria-live="polite" aria-atomic="true">12 photographs</p>
 </div>
+<noscript><p class="wrap gallery-note">Browse all twelve photographs below. Select a photograph to open the original image.</p></noscript>
 <div class="photo-grid wrap" id="photo-grid" role="tabpanel" aria-labelledby="tab-all">
-<figure data-category="Places" data-title="An alpine afternoon">
-<button class="photo-button" type="button" aria-label="View An alpine afternoon"><img src="/photos/archive-01.jpg" alt="Turquoise lake surrounded by evergreens and distant mountains" loading="eager" decoding="async"/></button>
+<figure data-category="Places" data-title="An alpine afternoon" data-id="an-alpine-afternoon">
+<a class="photo-button" href="/photos/archive-01.jpg" aria-label="View An alpine afternoon"><picture><source type="image/webp" srcset="/photos/derived/archive-01-480.webp 480w, /photos/derived/archive-01-960.webp 960w, /photos/derived/archive-01-1440.webp 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/><img src="/photos/archive-01.jpg" alt="Turquoise lake surrounded by evergreens and distant mountains" loading="eager" decoding="async" width="1500" height="1200" srcset="/photos/derived/archive-01-480.jpg 480w, /photos/derived/archive-01-960.jpg 960w, /photos/derived/archive-01-1440.jpg 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/></picture></a>
 <figcaption><span>An alpine afternoon</span><span class="stamp">Places</span></figcaption>
 </figure>
-<figure data-category="Portraits" data-title="Emily, in the studio">
-<button class="photo-button" type="button" aria-label="View Emily, in the studio"><img src="/photos/archive-02.jpg" alt="Studio portrait with warm light across the face" loading="eager" decoding="async"/></button>
+<figure data-category="Portraits" data-title="Emily, in the studio" data-id="emily-in-studio">
+<a class="photo-button" href="/photos/archive-02.jpg" aria-label="View Emily, in the studio"><picture><source type="image/webp" srcset="/photos/derived/archive-02-480.webp 480w, /photos/derived/archive-02-960.webp 960w, /photos/derived/archive-02-1440.webp 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/><img src="/photos/archive-02.jpg" alt="Studio portrait with warm light across the face" loading="eager" decoding="async" width="1500" height="2250" srcset="/photos/derived/archive-02-480.jpg 480w, /photos/derived/archive-02-960.jpg 960w, /photos/derived/archive-02-1440.jpg 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/></picture></a>
 <figcaption><span>Emily, in the studio</span><span class="stamp">Portraits</span></figcaption>
 </figure>
-<figure data-category="Places" data-title="Among the trees">
-<button class="photo-button" type="button" aria-label="View Among the trees"><img src="/photos/archive-03.jpg" alt="Sunlight through tall trees above a forest floor of ferns" loading="lazy" decoding="async"/></button>
+<figure data-category="Places" data-title="Among the trees" data-id="among-the-trees">
+<a class="photo-button" href="/photos/archive-03.jpg" aria-label="View Among the trees"><picture><source type="image/webp" srcset="/photos/derived/archive-03-480.webp 480w, /photos/derived/archive-03-960.webp 960w, /photos/derived/archive-03-1440.webp 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/><img src="/photos/archive-03.jpg" alt="Sunlight through tall trees above a forest floor of ferns" loading="lazy" decoding="async" width="1500" height="1874" srcset="/photos/derived/archive-03-480.jpg 480w, /photos/derived/archive-03-960.jpg 960w, /photos/derived/archive-03-1440.jpg 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/></picture></a>
 <figcaption><span>Among the trees</span><span class="stamp">Places</span></figcaption>
 </figure>
-<figure data-category="Portraits" data-title="Jordan, after dark">
-<button class="photo-button" type="button" aria-label="View Jordan, after dark"><img src="/photos/archive-04.jpg" alt="Portrait with glasses illuminated by colorful arcade lights" loading="lazy" decoding="async"/></button>
+<figure data-category="Portraits" data-title="Jordan, after dark" data-id="jordan-after-dark">
+<a class="photo-button" href="/photos/archive-04.jpg" aria-label="View Jordan, after dark"><picture><source type="image/webp" srcset="/photos/derived/archive-04-480.webp 480w, /photos/derived/archive-04-960.webp 960w, /photos/derived/archive-04-1440.webp 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/><img src="/photos/archive-04.jpg" alt="Portrait with glasses illuminated by colorful arcade lights" loading="lazy" decoding="async" width="1500" height="2000" srcset="/photos/derived/archive-04-480.jpg 480w, /photos/derived/archive-04-960.jpg 960w, /photos/derived/archive-04-1440.jpg 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/></picture></a>
 <figcaption><span>Jordan, after dark</span><span class="stamp">Portraits</span></figcaption>
 </figure>
-<figure data-category="Places" data-title="Still water, on film">
-<button class="photo-button" type="button" aria-label="View Still water, on film"><img src="/photos/archive-05.jpg" alt="Black and white photograph of a rocky mountain lake" loading="lazy" decoding="async"/></button>
+<figure data-category="Places" data-title="Still water, on film" data-id="still-water-on-film">
+<a class="photo-button" href="/photos/archive-05.jpg" aria-label="View Still water, on film"><picture><source type="image/webp" srcset="/photos/derived/archive-05-480.webp 480w, /photos/derived/archive-05-960.webp 960w, /photos/derived/archive-05-1440.webp 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/><img src="/photos/archive-05.jpg" alt="Black and white photograph of a rocky mountain lake" loading="lazy" decoding="async" width="1500" height="1875" srcset="/photos/derived/archive-05-480.jpg 480w, /photos/derived/archive-05-960.jpg 960w, /photos/derived/archive-05-1440.jpg 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/></picture></a>
 <figcaption><span>Still water, on film</span><span class="stamp">Places</span></figcaption>
 </figure>
-<figure data-category="Portraits" data-title="Under the blossoms">
-<button class="photo-button" type="button" aria-label="View Under the blossoms"><img src="/photos/archive-06.jpg" alt="Portrait of a woman beneath a tree in bloom" loading="lazy" decoding="async"/></button>
+<figure data-category="Portraits" data-title="Under the blossoms" data-id="under-the-blossoms">
+<a class="photo-button" href="/photos/archive-06.jpg" aria-label="View Under the blossoms"><picture><source type="image/webp" srcset="/photos/derived/archive-06-480.webp 480w, /photos/derived/archive-06-960.webp 960w, /photos/derived/archive-06-1440.webp 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/><img src="/photos/archive-06.jpg" alt="Portrait of a woman beneath a tree in bloom" loading="lazy" decoding="async" width="1500" height="1000" srcset="/photos/derived/archive-06-480.jpg 480w, /photos/derived/archive-06-960.jpg 960w, /photos/derived/archive-06-1440.jpg 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/></picture></a>
 <figcaption><span>Under the blossoms</span><span class="stamp">Portraits</span></figcaption>
 </figure>
-<figure data-category="Portraits" data-title="David">
-<button class="photo-button" type="button" aria-label="View David"><img src="/photos/archive-07.jpg" alt="Portrait of a man among dry grasses" loading="lazy" decoding="async"/></button>
+<figure data-category="Portraits" data-title="David" data-id="david">
+<a class="photo-button" href="/photos/archive-07.jpg" aria-label="View David"><picture><source type="image/webp" srcset="/photos/derived/archive-07-480.webp 480w, /photos/derived/archive-07-960.webp 960w, /photos/derived/archive-07-1440.webp 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/><img src="/photos/archive-07.jpg" alt="Portrait of a man among dry grasses" loading="lazy" decoding="async" width="1500" height="1125" srcset="/photos/derived/archive-07-480.jpg 480w, /photos/derived/archive-07-960.jpg 960w, /photos/derived/archive-07-1440.jpg 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/></picture></a>
 <figcaption><span>David</span><span class="stamp">Portraits</span></figcaption>
 </figure>
-<figure data-category="Places" data-title="After the last light">
-<button class="photo-button" type="button" aria-label="View After the last light"><img src="/photos/archive-08.jpg" alt="Stars above a dark forest and distant mountain" loading="lazy" decoding="async"/></button>
+<figure data-category="Places" data-title="After the last light" data-id="after-the-last-light">
+<a class="photo-button" href="/photos/archive-08.jpg" aria-label="View After the last light"><picture><source type="image/webp" srcset="/photos/derived/archive-08-480.webp 480w, /photos/derived/archive-08-960.webp 960w, /photos/derived/archive-08-1440.webp 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/><img src="/photos/archive-08.jpg" alt="Stars above a dark forest and distant mountain" loading="lazy" decoding="async" width="1500" height="1000" srcset="/photos/derived/archive-08-480.jpg 480w, /photos/derived/archive-08-960.jpg 960w, /photos/derived/archive-08-1440.jpg 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/></picture></a>
 <figcaption><span>After the last light</span><span class="stamp">Places</span></figcaption>
 </figure>
-<figure data-category="Portraits" data-title="Leah, over coffee">
-<button class="photo-button" type="button" aria-label="View Leah, over coffee"><img src="/photos/archive-09.jpg" alt="Woman at a cafe table looking toward a window" loading="lazy" decoding="async"/></button>
+<figure data-category="Portraits" data-title="Leah, over coffee" data-id="leah-over-coffee">
+<a class="photo-button" href="/photos/archive-09.jpg" aria-label="View Leah, over coffee"><picture><source type="image/webp" srcset="/photos/derived/archive-09-480.webp 480w, /photos/derived/archive-09-960.webp 960w, /photos/derived/archive-09-1440.webp 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/><img src="/photos/archive-09.jpg" alt="Woman at a cafe table looking toward a window" loading="lazy" decoding="async" width="1500" height="1125" srcset="/photos/derived/archive-09-480.jpg 480w, /photos/derived/archive-09-960.jpg 960w, /photos/derived/archive-09-1440.jpg 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/></picture></a>
 <figcaption><span>Leah, over coffee</span><span class="stamp">Portraits</span></figcaption>
 </figure>
-<figure data-category="Places" data-title="The long way around">
-<button class="photo-button" type="button" aria-label="View The long way around"><img src="/photos/archive-10.jpg" alt="Mountain lake with a rocky shore and snowy peaks" loading="lazy" decoding="async"/></button>
+<figure data-category="Places" data-title="The long way around" data-id="the-long-way-around">
+<a class="photo-button" href="/photos/archive-10.jpg" aria-label="View The long way around"><picture><source type="image/webp" srcset="/photos/derived/archive-10-480.webp 480w, /photos/derived/archive-10-960.webp 960w, /photos/derived/archive-10-1440.webp 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/><img src="/photos/archive-10.jpg" alt="Mountain lake with a rocky shore and snowy peaks" loading="lazy" decoding="async" width="1500" height="1200" srcset="/photos/derived/archive-10-480.jpg 480w, /photos/derived/archive-10-960.jpg 960w, /photos/derived/archive-10-1440.jpg 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/></picture></a>
 <figcaption><span>The long way around</span><span class="stamp">Places</span></figcaption>
 </figure>
-<figure data-category="Portraits" data-title="A quiet snowfall">
-<button class="photo-button" type="button" aria-label="View A quiet snowfall"><img src="/photos/archive-11.jpg" alt="Woman standing among snow-covered trees" loading="lazy" decoding="async"/></button>
+<figure data-category="Portraits" data-title="A quiet snowfall" data-id="a-quiet-snowfall">
+<a class="photo-button" href="/photos/archive-11.jpg" aria-label="View A quiet snowfall"><picture><source type="image/webp" srcset="/photos/derived/archive-11-480.webp 480w, /photos/derived/archive-11-960.webp 960w, /photos/derived/archive-11-1440.webp 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/><img src="/photos/archive-11.jpg" alt="Woman standing among snow-covered trees" loading="lazy" decoding="async" width="1500" height="2000" srcset="/photos/derived/archive-11-480.jpg 480w, /photos/derived/archive-11-960.jpg 960w, /photos/derived/archive-11-1440.jpg 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/></picture></a>
 <figcaption><span>A quiet snowfall</span><span class="stamp">Portraits</span></figcaption>
 </figure>
-<figure data-category="Personal" data-title="Around the fire">
-<button class="photo-button" type="button" aria-label="View Around the fire"><img src="/photos/archive-12.jpg" alt="Person beside a campfire in a dark forest" loading="lazy" decoding="async"/></button>
+<figure data-category="Personal" data-title="Around the fire" data-id="around-the-fire">
+<a class="photo-button" href="/photos/archive-12.jpg" aria-label="View Around the fire"><picture><source type="image/webp" srcset="/photos/derived/archive-12-480.webp 480w, /photos/derived/archive-12-960.webp 960w, /photos/derived/archive-12-1440.webp 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/><img src="/photos/archive-12.jpg" alt="Person beside a campfire in a dark forest" loading="lazy" decoding="async" width="1500" height="1000" srcset="/photos/derived/archive-12-480.jpg 480w, /photos/derived/archive-12-960.jpg 960w, /photos/derived/archive-12-1440.jpg 1440w" sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 640px) 92vw, (max-width: 980px) calc((92vw - 18px) / 2), (max-width: 1400px) calc((92vw - 36px) / 3), (max-width: 1552px) calc((100vw - 148px) / 3), 468px"/></picture></a>
 <figcaption><span>Around the fire</span><span class="stamp">Personal</span></figcaption>
 </figure>
 </div>
 <p class="wrap gallery-empty" hidden>More photographs soon.</p>
 <dialog class="lightbox" id="lightbox" aria-labelledby="lightbox-title">
-<button class="lightbox-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+<button class="lightbox-close" type="button" aria-label="Close" autofocus><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
 <h2 id="lightbox-title"></h2>
 <img id="lightbox-image" alt=""/>
 <p id="lightbox-category"></p>
+<div class="lightbox-navigation" aria-label="Photograph navigation">
+<button class="lightbox-previous" type="button" aria-label="Previous photograph">← Previous</button>
+<p id="lightbox-position" role="status" aria-live="polite" aria-atomic="true"></p>
+<button class="lightbox-next" type="button" aria-label="Next photograph">Next →</button>
+</div>
 </dialog>
 </section>
 </main>
@@ -98,7 +103,6 @@
 <div class="wrap footer-bar">
 <a href="/" class="footer-name">Austin Wheeler<span>Wildlandwheels</span></a>
 <p>© 2026 Austin Wheeler</p>
-<a href="/journal">Journal</a>
 <a href="https://www.instagram.com/wildlandwheels/" target="_blank" rel="noreferrer">Instagram ↗</a>
 </div>
 </footer>

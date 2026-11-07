@@ -64,6 +64,8 @@ class Page:
     ids: dict[str, str] = field(default_factory=dict)
     hrefs: list[tuple[int, str]] = field(default_factory=list)
     images: list[tuple[int, str, bool]] = field(default_factory=list)
+    image_sources: list[tuple[int, str, str]] = field(default_factory=list)
+    image_markup: list[tuple[int, str]] = field(default_factory=list)
     passwords: list[int] = field(default_factory=list)
     forms: list[int] = field(default_factory=list)
     controls: list[tuple[int, str, str]] = field(default_factory=list)
@@ -82,6 +84,8 @@ class Collector(HTMLParser):
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
         self.page = Page(rel="")
+        self.dialog_depth = 0
+        self.pictures: list[dict[str, int]] = []
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         attr = {key.lower(): "" if value is None else value for key, value in attrs}
@@ -92,14 +96,45 @@ class Collector(HTMLParser):
             self.page.ids[element_id] = role
         if tag in {"a", "link", "area"} and "href" in attr:
             self.page.hrefs.append((line, attr["href"].strip()))
+        if tag == "dialog":
+            self.dialog_depth += 1
+        if tag == "picture":
+            self.pictures.append({"line": line, "images": 0})
         if tag == "img":
             self.page.images.append((line, attr.get("src", ""), "alt" in attr))
+            if self.pictures:
+                self.pictures[-1]["images"] += 1
+            # An empty dialog image is populated when the viewer opens.
+            placeholder = self.dialog_depth and attr.get("alt") == "" and "src" not in attr and "srcset" not in attr
+            if not placeholder:
+                self.page.image_sources.append((line, "src", attr.get("src", "").strip()))
+            if "srcset" in attr:
+                self.page.image_sources.append((line, "srcset", attr["srcset"].strip()))
+        if tag == "source" and self.pictures:
+            self.page.image_sources.append((line, "srcset", attr.get("srcset", "").strip()))
+            if self.pictures[-1]["images"]:
+                self.page.image_markup.append((line, "picture source must precede its fallback img"))
+            if "src" in attr:
+                self.page.image_markup.append((line, "picture source uses src; use srcset"))
         if tag == "input" and attr.get("type", "").strip().lower() == "password":
             self.page.passwords.append(line)
         if tag == "form":
             self.page.forms.append(line)
         if "aria-controls" in attr:
             self.page.controls.append((line, role, attr["aria-controls"]))
+
+    def handle_startendtag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        self.handle_starttag(tag, attrs)
+        if tag not in {"img", "source", "input", "link", "area"}:
+            self.handle_endtag(tag)
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "dialog":
+            self.dialog_depth = max(0, self.dialog_depth - 1)
+        if tag == "picture" and self.pictures:
+            picture = self.pictures.pop()
+            if picture["images"] != 1:
+                self.page.image_markup.append((picture["line"], "picture needs exactly one fallback img"))
 
 
 def read_text(path: Path) -> str:
@@ -295,14 +330,60 @@ def check_fonts(site: Site) -> list[Finding]:
     return findings
 
 
+def srcset_urls(value: str) -> tuple[list[str], str | None]:
+    """Parse the site's width/density sets, rejecting ambiguous or invalid descriptors."""
+    urls: list[str] = []
+    descriptors: set[str] = set()
+    kinds: set[str] = set()
+    # Data URLs can include commas; a standalone one has no local file to check.
+    if value.startswith("data:") and not re.search(r"\s[0-9.]+[wx]\s*,", value):
+        return [value.split()[0]], None
+    for candidate in value.split(","):
+        parts = candidate.split()
+        if not parts or len(parts) > 2:
+            return urls, "empty candidate or invalid srcset descriptor"
+        descriptor = parts[1] if len(parts) == 2 else "1x"
+        if re.fullmatch(r"[1-9][0-9]*w", descriptor):
+            kind = "w"
+        elif re.fullmatch(r"(?:[0-9]+(?:\.[0-9]+)?|\.[0-9]+)x", descriptor) and float(descriptor[:-1]) > 0:
+            kind = "x"
+            descriptor = f"{float(descriptor[:-1]):g}x"
+        else:
+            return urls, f"invalid srcset descriptor {show(descriptor)}"
+        if descriptor in descriptors:
+            return urls, f"duplicate srcset descriptor {show(descriptor)}"
+        descriptors.add(descriptor)
+        kinds.add(kind)
+        urls.append(parts[0])
+    if len(kinds) > 1:
+        return urls, "srcset mixes width and density descriptors"
+    return urls, None
+
+
 def check_images(site: Site) -> list[Finding]:
     findings: list[Finding] = []
     for page in site.pages:
         for line, src, has_alt in page.images:
-            if has_alt:
+            if not has_alt:
+                source = f" src={show(src)}" if src else ""
+                findings.append(Finding("img", f"{page.rel}:{line}: img{source} has no alt attribute"))
+        for line, detail in page.image_markup:
+            findings.append(Finding("img", f"{page.rel}:{line}: {detail}"))
+        for line, attribute, value in page.image_sources:
+            where = f"{page.rel}:{line}: {attribute} {show(value)}"
+            if not value:
+                findings.append(Finding("img", f"{where} has no image source"))
                 continue
-            source = f" src={show(src)}" if src else ""
-            findings.append(Finding("img", f"{page.rel}:{line}: img{source} has no alt attribute"))
+            urls, error = srcset_urls(value) if attribute == "srcset" else ([value], None)
+            if error:
+                findings.append(Finding("img", f"{where}: {error}"))
+            for url in urls:
+                if is_external(url):
+                    continue
+                parsed = urllib.parse.urlsplit(url)
+                target = file_for(site.root, urllib.parse.unquote(join_internal(page.rel, parsed.path)).lstrip("/")) if parsed.path else None
+                if target is None:
+                    findings.append(Finding("img", f"{where}: image {show(url)} does not match a file"))
     return findings
 
 

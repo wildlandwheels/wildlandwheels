@@ -9,7 +9,7 @@ if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
 fi
 
 if [[ ! -d "$root/node_modules/playwright" ]]; then
-  echo "check: install dependencies with npm install before the overflow check." >&2
+  echo "check: install dependencies with npm ci before the browser checks." >&2
   exit 1
 fi
 
@@ -28,3 +28,4 @@ fi
 
 python3 "$root/scripts/check_site.py" "$target"
 node "$root/scripts/check_overflow.mjs" "$target"
+node "$root/scripts/check_gallery.mjs" "$target"

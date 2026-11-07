@@ -11,6 +11,11 @@ cp "$root/index.html" "$root/404.html" "$root/favicon.svg" "$dist/"
 cp -R "$root/about" "$root/photography" "$root/journal" "$root/work" \
   "$root/css" "$root/js" "$root/photos" "$root/fonts" "$dist/"
 
+node "$root/scripts/generate-images.mjs"
+
+test -s "$dist/photos/image-manifest.json"
+test -s "$dist/photos/derived/archive-01-480.webp"
+test -s "$dist/photos/derived/archive-12-960.jpg"
 test -s "$dist/index.html"
 test -s "$dist/photography/index.html"
 test -s "$dist/work/farm-truck-brewing/index.html"

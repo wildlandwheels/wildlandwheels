@@ -1,0 +1,3 @@
+srcset mixes width and density descriptors
+duplicate srcset descriptor
+invalid srcset descriptor

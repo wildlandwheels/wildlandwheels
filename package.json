@@ -5,10 +5,14 @@
   "scripts": {
     "build": "bash scripts/build.sh",
     "check": "bash scripts/check.sh",
-    "dev": "python3 -m http.server 4173 --bind 127.0.0.1",
+    "dev": "npm run build && python3 -m http.server 4173 --bind 127.0.0.1 --directory dist",
     "preview": "python3 -m http.server 4173 --bind 127.0.0.1 --directory dist"
   },
   "devDependencies": {
-    "playwright": "^1.56.1"
+    "playwright": "^1.56.1",
+    "sharp": "0.35.5"
+  },
+  "engines": {
+    "node": ">=20.9.0"
   }
 }

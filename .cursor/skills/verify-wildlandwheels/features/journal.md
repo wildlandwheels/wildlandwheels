@@ -1,30 +1,29 @@
 # Journal
 
-The journal page says new stories are on the way and links toward the photographs.
+The existing journal URL shows a waiting note and leads visitors to the photography archive.
 
 ## Sub-features
 
-- `journal-open` shows the journal heading and the waiting note.
-- `journal-link` opens the photography archive from the journal.
+- `journal-open` keeps the journal page available through its direct URL.
+- `journal-link` opens the full photography archive.
 
 ## How to get to it (user POV)
 
-- Choose `Journal` in the footer.
-- Open `/journal` directly.
+- Open `/journal/` directly or follow an existing saved link.
+- Choose `explore the photographs` in the journal note.
 
 ## Driving it with Playwright
 
 Preconditions:
 
 - Doctor reports a healthy preview at `http://127.0.0.1:4173`.
-- Drive with `node .cursor/skills/verify-wildlandwheels/scripts/drive.mjs --base http://127.0.0.1:4173 --features journal`.
+- Run `node .cursor/skills/verify-wildlandwheels/scripts/drive.mjs --base http://127.0.0.1:4173 --features journal`.
 
-- **Open the journal.** Go to the journal page. Run `page.goto(base + "/journal")`. The heading reads `The journal.` The link `explore the photographs` has `href` `/photography`.
-- **Record the journal.** Capture the page before following the link. Run `page.screenshot` to `artifacts/verify-wildlandwheels/journal-page.png`.
-- **Open the archive.** Choose `explore the photographs`. Run `page.getByRole("link", { name: "explore the photographs" }).click()`. The URL path is `/photography`, the heading reads `People. Places. A closer look.`, and twelve photographs are visible.
-- **Record the archive.** Capture the opened archive. Run `page.screenshot` to `artifacts/verify-wildlandwheels/journal-archive.png`.
+- **Open the journal.** Run `page.goto(base + "/journal/")`. The H1 reads `The journal.` and the link named `explore the photographs` has `href` `/photography`. Save `journal-entry.png`.
+- **Open the archive.** Save `journal-open-archive-before.png`, then run `page.getByRole("link", { name: "explore the photographs", exact: true }).click()`. The photography H1 reads `People. Places. A closer look.` and twelve figures are visible. Save `journal-open-archive-after.png`.
 
 ## Gotchas
 
-- A matching `href` without the archive on screen is not a pass. The journey has to land on the photography page and show the grid.
-- The period after `explore the photographs` sits outside the link. The accessible name has no period.
+- Journal is no longer in the shared footer. Do not invent a footer entry when proving this retained URL.
+- A matching link target alone is insufficient; this journey follows it and verifies the archive.
+- The sentence-ending period is outside the link and absent from its accessible name.

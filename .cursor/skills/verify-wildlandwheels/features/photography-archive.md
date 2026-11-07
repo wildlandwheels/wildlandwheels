@@ -1,39 +1,46 @@
 # Photography archive
 
-The photography archive lists edited photographs and filters them into Places, Portraits, and Personal. Choosing a photograph opens it at its original proportions.
+The photography archive preserves twelve photographs, filters them into Places, Portraits, and Personal, and provides a shareable full-size viewer with navigation within the selected collection.
 
 ## Sub-features
 
-- `archive-all` lists all twelve photographs.
-- `archive-places` shows only the Places collection.
-- `archive-view` opens and closes one photograph.
+- `archive-all` lists twelve photographs; Places has five, Portraits six, and Personal one.
+- `archive-filter` exposes URL-backed collections and a live photograph count.
+- `archive-view` opens originals with a title, category, and `x of y` status.
+- `archive-navigation` supports bounded previous/next controls and viewer-only arrow keys.
+- `archive-history` restores filters and photographs through refresh and Back/Forward.
+- `archive-fallback` keeps full-size image links usable without JavaScript.
 
 ## How to get to it (user POV)
 
-- Choose `Photography` in the main navigation.
-- Choose `Open the photography archive` on the home page.
-- On the archive, choose `All photographs`, `Places`, `Portraits`, or `Personal`.
-- Choose a photograph button such as `View An alpine afternoon`.
+- Choose `Photography` in the main navigation or `Explore photography` in the home hero.
+- Choose a home selected-work card: Places opens `/photography/?category=places`; Emily opens `/photography/?category=portraits&photo=emily-in-studio`; Around the fire opens `/photography/?category=personal&photo=around-the-fire`.
+- Follow `explore the photographs` from `/journal/`, or open `/photography/` directly.
+- Choose a subject tab or a photograph, then use Previous, Next, Close, or Escape.
+- Share or refresh a gallery URL; use browser Back/Forward to restore its state.
 
 ## Driving it with Playwright
 
 Preconditions:
 
 - Doctor reports a healthy preview at `http://127.0.0.1:4173`.
-- Drive with `node .cursor/skills/verify-wildlandwheels/scripts/drive.mjs --base http://127.0.0.1:4173 --features photography`.
+- Run `node .cursor/skills/verify-wildlandwheels/scripts/drive.mjs --base http://127.0.0.1:4173 --features photography`.
+- The smoke driver pairs `photography-<action>-before.png` and `photography-<action>-after.png` for every interaction, and records `entryURL` plus current `url` for each check and screenshot. Run `bash scripts/check.sh` for the exhaustive gallery checks in `scripts/check_gallery.mjs`.
 
-- **Open the archive.** Go to the photography page. Run `page.goto(base + "/photography")`. The heading `People. Places. A closer look.` is visible and twelve photographs are shown.
-- **Record the full archive.** Capture the grid. Run `page.screenshot` to `artifacts/verify-wildlandwheels/photography-all.png`.
-- **Filter to Places.** Choose the `Places` tab. Run `page.getByRole("tab", { name: "Places" }).click()`. The tab’s `aria-controls` element has `role` `tabpanel`, and after the click its `aria-labelledby` is `tab-places`. Five photographs remain visible and each caption category reads `Places`.
-- **Record the collection.** Capture the filtered grid. Run `page.screenshot` to `artifacts/verify-wildlandwheels/photography-places.png`.
-- **Open a photograph.** Choose `View An alpine afternoon`. Run `page.getByRole("button", { name: "View An alpine afternoon" }).click()`. A dialog heading reads `An alpine afternoon`, the image source contains `/photos/archive-01.jpg`, and the category reads `Places`.
-- **Record the viewer.** Capture the open dialog. Run `page.screenshot` to `artifacts/verify-wildlandwheels/photography-lightbox.png`.
-- **Close the viewer.** Choose `Close`. Run `page.getByRole("button", { name: "Close" }).click()`. The dialog heading is no longer visible.
-- **Record the closed grid.** Capture the archive again. Run `page.screenshot` to `artifacts/verify-wildlandwheels/photography-closed.png`.
+- **Open the archive.** Run `page.goto(base + "/photography/")`. The H1 reads `People. Places. A closer look.` and `#photo-grid > figure:visible` counts twelve. Save `photography-entry.png`.
+- **Filter to Places.** Run `page.getByRole("tab", { name: "Places", exact: true }).click()`. The tab controls `#photo-grid`, the panel is labelled by `tab-places`, five figures remain visible, all category captions read `Places`, and the URL contains `category=places`. Record the `places` action pair.
+- **Open a photograph.** Run `page.getByRole("button", { name: "View An alpine afternoon", exact: true }).click()`. The native dialog title is `An alpine afternoon`, `#lightbox-image` uses the original `/photos/archive-01.jpg`, and `#lightbox-position` reads `1 of 5`. Previous is disabled. Record `open-photo`.
+- **Navigate the collection.** Run `page.getByRole("button", { name: "Next photograph" }).click()`. The title becomes `Among the trees`, the counter reads `2 of 5`, and the photo parameter is `among-the-trees`. Previous returns to `An alpine afternoon`. Record `next-photo` and `previous-photo` separately.
+- **Close and restore history.** Choose `Close`, wait for `#lightbox` to become hidden, and confirm focus returns to the source image anchor. The URL retains Places and removes `photo`. Browser Back restores all twelve; Forward restores Places. Record `close-photo`, `history-back`, and `history-forward`.
+- **Open Emily directly.** Run `page.goto(base + "/photography/?category=portraits&photo=emily-in-studio")`. The title is `Emily, in the studio`, Portraits is selected, and the counter reads `1 of 6`. Close keeps the archive and Portraits selected. Record `direct-emily` and `close-direct`.
+- **Open Personal directly.** Run `page.goto(base + "/photography/?category=personal&photo=around-the-fire")`. The title is `Around the fire`, status is `1 of 1`, and both navigation controls are disabled. Escape closes the viewer and leaves Personal selected. Record `direct-personal` and `escape-direct`.
 
 ## Gotchas
 
-- `Places` is both a tab and a caption. Use the tab role. A caption click does not filter the grid.
-- The Places collection still includes `An alpine afternoon`. Filtering must not hide the photograph the viewer step opens.
-- Count visible figures. Hidden figures stay in the page, so a count of all `figure` elements stays twelve after filtering.
-- Do not treat the empty line `More photographs soon.` as success. Every shipped collection has photographs.
+- Hidden figures remain in the DOM. Count visible figures when checking filters.
+- Slugs are stored on `figure[data-id]`; Emily's stable ID is `emily-in-studio`. Titles, alt text, categories, and order remain unchanged.
+- Thumbnail `srcset` may use derivatives; the viewer follows the original image anchor `href`, never the thumbnail `currentSrc`.
+- Category values are the lowercase allowlist `places`, `portraits`, and `personal`. Missing or invalid categories fall back to all. A valid photo outside an explicit category selects its own category; an invalid photo is ignored safely.
+- Next/Previous replace the current photo entry, so closing an owned modal entry returns to its collection. Closing a direct-linked modal removes `photo` without leaving the site.
+- Tabs support ArrowLeft/ArrowRight/Home/End. Viewer arrow keys work only inside the dialog; Escape closes it. Native modal focus stays inside the dialog and returns to the source, or the selected tab when the source is hidden. Background scrolling is locked while open.
+- Without JavaScript, filter controls stay hidden and image anchors open the original files. Button semantics are added only when the dialog is supported.
