@@ -1,63 +1,83 @@
 # Wildlandwheels
 
-Austin Wheeler’s portfolio: photography, short-form content, and marketing.
-
-The site is static HTML, CSS, and one gallery script. It does not need a backend.
+Austin Wheeler’s photography portfolio, alongside selected content and marketing work.
+Static HTML, CSS and a small gallery script; no backend or framework.
 
 ## Run locally
 
-From the repository root:
+Use Node 20.9 or later (CI uses Node 22), Python 3 and npm:
 
 ```bash
-python3 -m http.server 4173 --bind 127.0.0.1
+npm ci
+npm run dev
 ```
 
-Open http://127.0.0.1:4173/
+Open http://127.0.0.1:4173/. The development command builds the site and serves `dist/`.
+Rebuild after editing source files. Serving the repository root directly skips generated image variants.
 
-`npm run dev` runs the same command.
-
-## Build
+## Build and preview
 
 ```bash
-bash scripts/build.sh
+npm run build
+npm run preview
 ```
 
-`npm run build` runs that script. It copies the site into `dist/` for any static host.
+The build copies the static pages and original assets into `dist/`, verifies their preservation hashes,
+and generates proportional WebP/JPEG display variants at 480, 960 and 1440 pixels where possible.
+It requires the locked `sharp` dependency installed by `npm ci`.
 
-Preview the build:
+Original photographs, favicon and fonts are unchanged. `scripts/image-sources.json` records their hashes
+and dimensions; normal builds fail if a preserved asset changes. Derivatives live only in `dist/photos/derived/`.
+The generated `/photos/image-manifest.json` records derivative dimensions, hashes and candidate transfer estimates.
+Those estimates cover every archive image once; they are not page-load measurements.
 
-```bash
-python3 -m http.server 4173 --bind 127.0.0.1 --directory dist
-```
+For an intentional new asset, review the source addition, then regenerate the baseline with
+`node scripts/generate-images.mjs --write-source-manifest`. Review the resulting manifest diff.
+Build caches under `node_modules/.cache/`; `IMAGE_CACHE=0 npm run build` regenerates every derivative.
 
-`npm run preview` runs the same command. Build first so `dist/` exists.
+## Gallery links
+
+The archive supports `?category=places`, `?category=portraits` and `?category=personal`.
+A `photo` parameter opens an image, for example
+`/photography/?category=portraits&photo=emily-in-studio`.
+Back/Forward restores the selected collection and viewer. Previous/Next stays within that collection.
+Without JavaScript, all photographs remain available as links to their original files.
 
 ## Checks
 
-Build the site, then check `dist/`.
-
 ```bash
-bash scripts/build.sh
-bash scripts/check.sh
+npm run build
+npm run check
+bash scripts/check.sh --self-test
 ```
 
-`npm run check` runs the same check. The check fails when any of these are true:
+Install a test browser with `npx playwright install chromium` when Chrome/Chromium is unavailable.
+`PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` selects an existing browser executable explicitly.
+The checks cover internal links/fragments, image sources and responsive candidates, font licenses,
+alt attributes, ARIA references, unintended forms, hidden positional navigation, mobile overflow,
+and gallery navigation/history/focus/fallback behavior. Overflow checks cover 320, 390, 768, 1024 and 1440 CSS pixels. Self-tests prove broken fixtures fail.
 
-- An internal link or fragment does not resolve.
-- A page contains a form or a password field.
-- A file in `fonts/` has no matching license.
-- An `img` has no `alt` attribute.
-- An `aria-controls` target is missing, or a tab does not point at a tabpanel.
-- A positional `nav` selector hides a link.
-- A page scrolls horizontally at 320 or 390 CSS pixels, including the photograph lightbox.
-- An in-paragraph link is not `display: inline` at those widths.
+The maintained browser journeys and evidence conventions are in
+[the verification skill](.cursor/skills/verify-wildlandwheels/SKILL.md).
+They capture screenshots before and after actions and retain a JSON report under ignored `artifacts/`.
+External email and brewery links are verified by their href; verification does not open them.
 
-The overflow check uses Playwright. Run `npm install` once so `playwright` is available. It launches Chrome when it is installed, and otherwise Playwright's Chromium.
+## Deployment
 
-`bash scripts/check.sh --self-test` runs the same checks against the fixtures in `scripts/fixtures/`. Those fixtures are broken on purpose, and the self-test expects each one to fail. It also proves the overflow check rejects `scripts/overflow/broken`, rejects an in-paragraph `inline-flex` link in `scripts/overflow/inline-flex`, and accepts `scripts/overflow/fitted`.
+Pull requests run checks and do not deploy. A push to `main` builds and checks the site once,
+then uploads `site-dist-<commit SHA>`. The production job downloads that same checked artifact
+rather than rebuilding. It retains the existing `production` environment approval gate.
 
-The check does not flag unused CSS selectors. `nav a:hover` and `[aria-selected="true"]` are real rules, and they do not appear as text in the HTML. `gallery.js` also shows and hides photographs without adding a class. A selector list would fail the current site.
+Manual dispatch is restricted to `main` and requires `approved_sha` to exactly match the selected commit.
+Before approving production, confirm the run and artifact SHA match the reviewed commit;
+do not approve an older waiting run by mistake. No workflow changes repository approval settings.
 
-## Deploy
+After a release, verify the homepage, photography deep links/viewer, case-study image and contact link.
+For rollback, select the previous successful deployment in Cloudflare Pages rather than rewriting history.
 
-A push to `main` builds the site and deploys `dist/` to the Cloudflare Pages project `wildlandwheels`, which serves wildlandwheels.com. The deploy runs only after the site checks pass. The deploy job uses the `production` environment, so it waits for Austin's approval before anything reaches the live site. The same workflow can be started from the Actions tab.
+## Photography-first review
+
+The implemented direction keeps the night-sky hero and original imagery, makes photography the primary route,
+and presents Farm Truck as selected supporting work. The 10,000-follower milestone is Austin-supplied shared credit:
+“Helped Farm Truck Brewing’s Instagram account reach 10,000 followers.” No growth rate, timeframe or sole credit is implied.
+The Journal remains reachable at `/journal` while its placeholder is omitted from footer navigation.

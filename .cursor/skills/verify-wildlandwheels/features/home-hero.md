@@ -1,16 +1,17 @@
 # Home hero
 
-The home hero introduces Austin Wheeler and offers a way into selected work and contact.
+The home hero introduces Austin Wheeler through photography and offers a primary archive entry plus a jump to selected work.
 
 ## Sub-features
 
-- `home-hero` shows the headline, deck, and night photograph.
-- `home-work` moves from the hero to the selected-work heading.
+- `home-hero` shows the headline and night photograph.
+- `home-work` moves to the selected-work heading below the fixed header.
+- `home-photography` opens the full archive through the primary action.
 
 ## How to get to it (user POV)
 
-- Open the site root.
-- Choose the wordmark, which returns to `/#top`.
+- Open the site root or choose the wordmark, which returns to `/#top`.
+- Choose `Explore photography` in the hero.
 - Choose `View selected work` in the hero.
 
 ## Driving it with Playwright
@@ -18,15 +19,15 @@ The home hero introduces Austin Wheeler and offers a way into selected work and 
 Preconditions:
 
 - Doctor reports a healthy preview at `http://127.0.0.1:4173`.
-- Drive with `node .cursor/skills/verify-wildlandwheels/scripts/drive.mjs --base http://127.0.0.1:4173 --features home`.
+- Run `node .cursor/skills/verify-wildlandwheels/scripts/drive.mjs --base http://127.0.0.1:4173 --features home`.
 
-- **Open home.** Go to the site root. Run `page.goto(base + "/")`. The heading `People. Places. A closer look.` is visible. The hero image alt is `Stars above a dark forest and distant mountain`. Run `page.locator(".hero-photograph img").getAttribute("alt")`.
-- **Record the start.** Capture the hero before the jump. Run `page.screenshot` to `artifacts/verify-wildlandwheels/home-loaded.png`. The wordmark `Austin Wheeler` is in the shot.
-- **Open selected work.** Choose `View selected work`. Run `page.getByRole("link", { name: "View selected work" }).click()`. Wait until `window.scrollY` is unchanged between two checks and `#work-title` has `getBoundingClientRect().top` between `0` and `280`. The URL hash is `#work`.
-- **Record the result.** Capture the settled selected-work section. Run `page.screenshot` to `artifacts/verify-wildlandwheels/home-selected-work.png`. The heading is near the top of the viewport, not still sliding through the lower half.
+- **Open home.** Run `page.goto(base + "/")`. The H1 reads `People. Places. A closer look.` and `.hero-photograph img` has alt `Stars above a dark forest and distant mountain`. Save `home-entry.png`.
+- **Open selected work.** Run `page.getByRole("link", { name: "View selected work", exact: true }).click()`. Wait for three stable scroll samples and `#work-title` below the measured header bottom, within 280px of it. The heading reads `People, places and the moments between.` and the hash is `#work`. Save `home-selected-work-before.png` and `home-selected-work-after.png` around the action.
+- **Open photography.** Bring `Explore photography` into view, record `home-explore-photography-before.png`, then run `page.getByRole("link", { name: "Explore photography", exact: true }).click()`. The archive H1 and twelve photographs appear at `/photography/`. Save `home-explore-photography-after.png`.
 
 ## Gotchas
 
-- `View selected work` is an in-page link. A full navigation to another URL means the hero action was not the one under test.
-- The screenshot must show the heading after smooth scroll has stopped. A frame where the heading has only just entered the bottom of the viewport is not the settled state.
-- At a 1440×900 viewport the settled heading top is within 280px of the viewport top. Do not reuse that pixel bound at a different viewport height.
+- `View selected work` is an in-page jump; `Explore photography` opens the archive.
+- The arrows are decorative and hidden from accessible names.
+- Wait for the fixed-header clearance and settled scroll before capturing the section. The scroll offset is intentionally nonzero.
+- Every assertion and screenshot in `report.json` includes the journey entry URL and current URL. Failure evidence is written even if the journey aborts.

@@ -39,8 +39,10 @@ Each feature file starts with an H1 title and one paragraph describing the user-
 ## Features
 
 - [Home hero](./home-hero.md) covers the opening photograph, headline, and the jump to selected work.
-- [Photography archive](./photography-archive.md) covers subject collections and the photograph viewer.
+- [Photography archive](./photography-archive.md) covers URL-backed subject collections, viewer navigation, history, and original-image fallback.
 - [Farm Truck Brewing](./farm-truck-brewing.md) covers the marketing case study.
 - [Contact email](./contact-email.md) covers the email link on the home page.
 - [About](./about.md) covers the about page and its email link.
-- [Journal](./journal.md) covers the journal note and the link that opens the photography archive.
+- [Journal](./journal.md) covers the retained direct journal URL and its archive link; there is no Journal footer entry.
+
+The smoke driver covers all six journeys. `scripts/check_gallery.mjs`, invoked by `bash scripts/check.sh`, checks the detailed gallery behavior across refresh, history, valid and invalid deep links, keyboard/focus/scroll behavior, and no-JavaScript fallback. Browser executables are selected centrally by `scripts/browser_helpers.mjs`; use `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` for an installed Chromium override.
